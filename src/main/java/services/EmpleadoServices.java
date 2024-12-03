@@ -72,9 +72,7 @@ public class EmpleadoServices {
                 empleadoEntity.setSalario(nuevoEmp.getSalario());
                 empleadoEntity.setComision(nuevoEmp.getComision());
                 empleadoEntity.setDepartamentosByDeptNo(departamentoRepository.depByName(nuevoEmp.getNombreDep()));
-
-                    mensaje = empleadoRepository.insertEmpleado(empleadoEntity);
-
+                mensaje = empleadoRepository.insertEmpleado(empleadoEntity);
             }
         } catch (SQLException e) {
             mensaje ="Error SQL: "+ e;
@@ -84,44 +82,26 @@ public class EmpleadoServices {
 
     public String borrarEmpleado(String apellidoEmpleado){
         String mensaje="El empleado no se ha podido borrar. ";
-        try {
-            /*int idEmpleado = empleadoRepository.empleadoByName(apellidoEmpleado);
-            if (idEmpleado == 0) {
-                mensaje += "El empleado no existe. ";
-            }else {
 
-                    if (empleadoRepository.borrarEmpleado(idEmpleado)){
-                        mensaje = "El empleado se ha borrado. ";
-                    }
-
-            }*/
-            //Como el campo apellido no es único debemos asegurarnos de que se borra el empleado correcto y no todos.
-            ArrayList<Integer> idsEmpleados = empleadoRepository.empleadosByName(apellidoEmpleado);
-            if (idsEmpleados.isEmpty()){
-                mensaje ="El empleado no existe.\n";
-            } else if (idsEmpleados.size()==1) {
-                if (empleadoRepository.borrarEmpleado(idsEmpleados.getFirst())){
-                    mensaje ="El empleado se ha borrado.";
-                }
-            }else {
-                mensaje = "Existen varios empleados con ese apellido. Elija el empleado a borrar: \n";
-                for (Integer i:idsEmpleados) {
-                    mensaje += i.toString() + "\n";
-                }
+        ArrayList<Integer> idsEmpleados = empleadoRepository.empleadosByName(apellidoEmpleado);
+        if (idsEmpleados.isEmpty()){
+            mensaje ="El empleado no existe.\n";
+        } else if (idsEmpleados.size()==1) {
+            if (empleadoRepository.borrarEmpleado(idsEmpleados.getFirst())){
+                mensaje ="El empleado se ha borrado.";
             }
-        } catch (SQLException e) {
-            mensaje += "Ocurrió un error al borrar el empleado. ";
+        }else {
+            mensaje = "Existen varios empleados con ese apellido. Elija el empleado a borrar: \n";
+            for (Integer i:idsEmpleados) {
+                mensaje += i.toString() + "\n";
+            }
         }
         return mensaje;
     }
     public String borrarEmpleadoById(int idEmpleado){
         String mensaje="El empleado no se ha borrado. ";
-        try{
-            if(empleadoRepository.borrarEmpleado(idEmpleado)){
-                mensaje = "Empleado "+ idEmpleado +" borrado.";
-            }
-        } catch (SQLException e) {
-            mensaje += "Ocurrió un error al intentar borrar el empleado.";
+        if(empleadoRepository.borrarEmpleado(idEmpleado)){
+            mensaje = "Empleado "+ idEmpleado +" borrado.";
         }
         return mensaje;
     }

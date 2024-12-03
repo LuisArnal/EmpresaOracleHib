@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<empleados>
+    <empleado id="8080">
+        <apellido>VELA</apellido>
+        <oficio>JEFA</oficio>
+        <director>NEGRO</director>
+        <salario>5000</salario>
+        <comision>500</comision>
+        <depto_id>30</depto_id>
+    </empleado>
+    <empleado id="8081">
+        <apellido>PARDOS</apellido>
+        <oficio>JEFA</oficio>
+        <director>BLANCO</director>
+        <salario>5000</salario>
+        <comision>500</comision>
+        <depto_id>40</depto_id>
+    </empleado>
+    <empleado id="7369">
+        <apellido>FERNANDEZ</apellido>
+        <oficio>JEFE</oficio>
+        <director>CEREZO</director>
+        <salario>5000</salario>
+        <comision>500</comision>
+        <depto_id>10</depto_id>
+    </empleado>
+    <empleado id="8082">
+        <apellido>MORENO</apellido>
+        <oficio>JEFE</oficio>
+        <director>CEREZO</director>
+        <salario>5000</salario>
+        <comision>500</comision>
+        <depto_id>70</depto_id>
+    </empleado>
+</empleados>

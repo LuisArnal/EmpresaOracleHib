@@ -24,7 +24,7 @@ public class EmpleadosXMLServices {
         if (Files.isReadable(ruta)){
             EmpleadosXML empleadosXML;
             ArrayList<EmpleadosEntity> empleadosCarga = new ArrayList<EmpleadosEntity>();
-            EmpleadosEntity empleadoDAO = new EmpleadosEntity();
+            EmpleadosEntity empleadoNuevo = new EmpleadosEntity();
             JAXBContext jaxbContext = null;
             try{
                 jaxbContext = JAXBContext.newInstance(EmpleadosXML.class);
@@ -32,20 +32,26 @@ public class EmpleadosXMLServices {
                 empleadosXML = (EmpleadosXML) unmarshaller.unmarshal(ruta.toFile());
                 //transformamos de XML a DAO para poder hacer las inserciones en la BD con el repositorio
                 for (EmpleadoXML emp: empleadosXML.getEmpleados()){
-                    empleadoDAO = new EmpleadosEntity();
-                    empleadoDAO.setEmpNo(emp.getIdEmpleado());
-                    empleadoDAO.setApellido(emp.getApellido());
-                    empleadoDAO.setOficio(emp.getOficio());
-                    empleadoDAO.setFechaAlt(Date.valueOf(LocalDate.now()));
-                    empleadoDAO.setSalario(emp.getSalario());
-                    empleadoDAO.setComision(emp.getComision());
-                    empleadoDAO.setDepartamentosByDeptNo(departamentoRepository.depById(emp.getIdDepto()));
-                    empleadosCarga.add(empleadoDAO);
+                    empleadoNuevo = new EmpleadosEntity();
+                    empleadoNuevo.setEmpNo(emp.getIdEmpleado());
+                    empleadoNuevo.setApellido(emp.getApellido());
+                    empleadoNuevo.setOficio(emp.getOficio());
+                    empleadoNuevo.setDir(empleadoRepository.empleadoByName(emp.getDirector()));
+                    empleadoNuevo.setFechaAlt(Date.valueOf(LocalDate.now()));
+                    empleadoNuevo.setSalario(emp.getSalario());
+                    empleadoNuevo.setComision(emp.getComision());
+                    empleadoNuevo.setDepartamentosByDeptNo(departamentoRepository.depById(emp.getIdDepto()));
+                    empleadosCarga.add(empleadoNuevo);
                 }
                 //comprobamos si cumplen las restricciones y sólo insertamos los que las cumplen
                 for (EmpleadosEntity emp: empleadosCarga){
                     if (empleadoRepository.empIdExiste(emp.getEmpNo())){
-                        mensaje.append("El empleado no se insertará porque ya existe un empleado con ese id");
+                        mensaje.append("El empleado ").append(emp.getApellido()).append(" no se insertará porque ya existe un empleado con ese id. \n");
+                    } else if (emp.getDepartamentosByDeptNo()==null) {
+                        mensaje.append("El empleado ").append(emp.getApellido()).append(" no se insertará porque no tiene departamento asignado. \n");
+                    }else{
+                        empleadoRepository.insertEmpleado(emp);
+                        mensaje.append("Empleado ").append(emp.getApellido()).append(" insertado con éxito.\n");
                     }
                 }
             } catch (JAXBException e) {

@@ -25,7 +25,6 @@ public class DepartamentoRepository {
             //creamos la query de jpql para recuperar el listado:
             Query listarDepsquery = em.createQuery("from DepartamentosEntity ");
             listadoDepartamentos = listarDepsquery.getResultList();
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +40,9 @@ public class DepartamentoRepository {
             depQuery.setParameter("pDepId", id);
             departamentoById = (DepartamentosEntity) depQuery.getSingleResult();
 
-        } catch (Exception e) {
+        }catch (NoResultException e){
+            departamentoById = null;
+        }catch (Exception e) {
             throw new RuntimeException(e);
         }
         return departamentoById;

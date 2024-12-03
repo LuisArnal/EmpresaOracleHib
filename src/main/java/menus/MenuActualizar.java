@@ -1,5 +1,6 @@
 package menus;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import libs.Leer;
 import services.EmpleadoUpdateServices;
 
@@ -19,6 +20,7 @@ public class MenuActualizar {
             System.out.println("3. Actualizar la comisión.");
             System.out.println("4. Actualizar el director.");
             System.out.println("5. Actualizar el departamento.");
+            System.out.println("6. Volver al menú principal");
             opcion = this.pideOpcion();
             this.procesaOpcion(opcion, idEmpleado);
         } while (!salir);
@@ -34,6 +36,10 @@ public class MenuActualizar {
             case "1" -> {
                 String nuevoOficio = Leer.pedirCadena("Introduce el nuevo oficio.");
                 System.out.println(empUpServices.updateOficio(nuevoOficio, idEmpleado));
+            }
+            case "6" -> {
+                MenuPrincipal menuPrincipal = new MenuPrincipal();
+                menuPrincipal.muestraMenu();
             }
             default -> System.out.println("Opcion invalida");
         }

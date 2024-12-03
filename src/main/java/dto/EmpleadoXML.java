@@ -19,7 +19,7 @@ public class EmpleadoXML {
     public EmpleadoXML() {
     }
 
-    @XmlAttribute(name="idEmpleado")
+    @XmlAttribute(name="id")
     public int getIdEmpleado() {
         return idEmpleado;
     }
