@@ -24,5 +24,6 @@ public class EmfSingleton {
         if (this.emf == null)
             this.emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         return this.emf;
+
     }
 }
